@@ -22,10 +22,12 @@ export function createElement(type, attributes = {}, props = {}) {
 }
 
 export function getRandomImages(num = 10) {
-  return new Array(num).fill("").map(() => {
-    const randomId = Math.floor(Math.random() * (100 - 1)) + 1
-    // FIXME: unique ids only, and somethimes images break (e.g. #97)
-    return `https://picsum.photos/id/${randomId}/200/200`
+  // FIXME: unique ids only, and somethimes images break (e.g. #97)
+  const ids = [45, 73, 89, 17, 64, 65, 95, 70, 92, 9]
+  // return new Array(num).fill("")
+  return ids.map(id => {
+    // const randomId = Math.floor(Math.random() * (100 - 1)) + 1
+    return `https://picsum.photos/id/${id}/200/200`
   })
 }
 
