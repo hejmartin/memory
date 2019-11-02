@@ -26,20 +26,25 @@ export default class Tile extends Base {
         onclick: this.handleTileClick.bind(this)
       }
     )
+
     this.elements.inner = createElement("div", { class: "grid-tile__inner" })
+
     this.elements.front = createElement("img", {
       src: tile.url,
-      class: "grid-tile__front"
+      class: "grid-tile__front",
+      alt: `Button #${props.index + 1}`
     })
+
     this.elements.back = createElement("div", {
       class: " grid-tile__back"
     })
+
     this.elements.inner.append(this.elements.front, this.elements.back)
     this.elements.button.append(this.elements.inner)
     this.elements.root.append(this.elements.button)
   }
 
-  handleTileClick(e) {
+  handleTileClick() {
     const tile = store.getState().tiles[this.props.index]
 
     let newState

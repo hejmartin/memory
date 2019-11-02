@@ -14,8 +14,11 @@ export default class App extends Base {
 
     this.elements.root = createElement("div")
     this.elements.grid = createElement("grid", { class: "grid" })
-    this.elements.counter = createElement("div", { class: "counter" })
-    this.elements.root.append(this.elements.grid, this.elements.counter)
+    this.elements.status = createElement("div", {
+      class: "status",
+      "aria-live": "polite"
+    })
+    this.elements.root.append(this.elements.grid, this.elements.status)
 
     store.setState(() => ({
       loading: true
@@ -99,6 +102,6 @@ export default class App extends Base {
     const resolvedPairs =
       tiles.filter(tile => tile.state === RESOLVED).length / 2
 
-    this.elements.counter.innerHTML = `Resolved: ${resolvedPairs} / ${totalPairs} | Attempts: ${attempts}`
+    this.elements.status.innerHTML = `Resolved: ${resolvedPairs} / ${totalPairs} | Attempts: ${attempts}`
   }
 }
