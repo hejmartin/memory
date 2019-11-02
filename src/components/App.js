@@ -5,7 +5,7 @@ import {
   shuffleArray
 } from "../lib/utils.js"
 import Base from "./Base.js"
-import store from "../lib/store.js"
+import * as store from "../lib/store.js"
 import Tile, { HIDDEN, REVEALED, RESOLVED } from "./Tile.js"
 
 export default class App extends Base {
@@ -17,9 +17,9 @@ export default class App extends Base {
     this.elements.counter = createElement("div", { class: "counter" })
     this.elements.root.append(this.elements.grid, this.elements.counter)
 
-    store.setState({
+    store.setState(() => ({
       loading: true
-    })
+    }))
 
     Promise.all(getRandomImages(10).map(preloadImage))
       .then(urls => {
@@ -30,10 +30,10 @@ export default class App extends Base {
         }, [])
 
         store.setState(
-          {
+          () => ({
             loading: false,
             tiles: shuffleArray(tiles)
-          },
+          }),
           () => {
             this.createTiles()
           }
@@ -48,14 +48,14 @@ export default class App extends Base {
   }
 
   createTiles() {
-    store.state.tiles.forEach((_tile, index) => {
+    store.getState().tiles.forEach((_tile, index) => {
       const tile = new Tile({ index })
       this.elements.grid.append(tile.elements.root)
     })
   }
 
   handleTilesUpdate() {
-    const tiles = store.state.tiles
+    const tiles = store.getState().tiles
     const revealed = tiles.filter(tile => tile.state === REVEALED)
 
     if (revealed.length > 1) {
@@ -63,24 +63,24 @@ export default class App extends Base {
 
       if (isMatch) {
         // If revealed tiles match, mark them as resolved
-        store.setState({
+        store.setState(() => ({
           tiles: tiles.map(tile => {
             if (revealed.includes(tile)) {
               return Object.assign({}, tile, { state: RESOLVED })
             }
             return tile
           })
-        })
+        }))
       } else {
         // If they don't match, flip them back down
         revealed.forEach((tile, index) => {
           setTimeout(() => {
-            store.setState({
-              tiles: store.state.tiles.map(t => {
+            store.setState(({ tiles }) => ({
+              tiles: tiles.map(t => {
                 if (t !== tile) return t
                 return Object.assign({}, t, { state: HIDDEN })
               })
-            })
+            }))
           }, 500 * (index + 1))
         })
       }
@@ -90,9 +90,9 @@ export default class App extends Base {
   }
 
   update() {
-    const totalPairs = store.state.tiles.length / 2
+    const totalPairs = store.getState().tiles.length / 2
     const resolvedPairs =
-      store.state.tiles.filter(tile => tile.state === RESOLVED).length / 2
+      store.getState().tiles.filter(tile => tile.state === RESOLVED).length / 2
 
     this.elements.counter.innerHTML = `Resolved: ${resolvedPairs} / ${totalPairs}`
   }

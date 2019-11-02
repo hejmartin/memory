@@ -1,39 +1,37 @@
 import { getByPath } from "./utils.js"
 
-class Store {
-  constructor(state = {}) {
-    this.listeners = {}
-    this.state = state
-  }
+let state = {
+  tiles: []
+}
+const listeners = {}
 
-  setState(updates, callback) {
-    const previousState = this.state
-    const newState = Object.assign({}, previousState, updates)
+export function getState() {
+  return state
+}
 
-    this.state = newState
+export function setState(updater, callback) {
+  const previousState = state
+  const newState = Object.assign({}, previousState, updater(state))
 
-    Object.keys(this.listeners).forEach(path => {
-      const previousValue = getByPath(path, previousState)
-      const newValue = getByPath(path, this.state)
-      if (newValue !== previousValue) {
-        this.listeners[path].forEach(callback => callback(newValue))
-      }
-    })
+  state = newState
 
-    if (callback) {
-      callback(newState)
+  Object.keys(listeners).forEach(path => {
+    const previousValue = getByPath(path, previousState)
+    const newValue = getByPath(path, state)
+    if (newValue !== previousValue) {
+      listeners[path].forEach(callback => callback(newValue))
     }
-  }
+  })
 
-  addListener(path, callback) {
-    if (!this.listeners[path]) {
-      this.listeners[path] = []
-    }
-
-    this.listeners[path].push(callback)
+  if (callback) {
+    callback(newState)
   }
 }
 
-export default new Store({
-  tiles: []
-})
+export function addListener(path, callback) {
+  if (!listeners[path]) {
+    listeners[path] = []
+  }
+
+  listeners[path].push(callback)
+}

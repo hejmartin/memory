@@ -1,5 +1,5 @@
 import Base from "./Base.js"
-import store from "../lib/store.js"
+import * as store from "../lib/store.js"
 import { createElement } from "../lib/utils.js"
 
 export const HIDDEN = "HIDDEN"
@@ -10,9 +10,7 @@ export default class Tile extends Base {
   constructor(props) {
     super(props)
 
-    this.handleTileClick = this.handleTileClick.bind(this)
-
-    const tile = store.state.tiles[props.index]
+    const tile = store.getState().tiles[props.index]
 
     store.addListener(`tiles.${props.index}`, tile => {
       this.update()
@@ -25,7 +23,7 @@ export default class Tile extends Base {
         class: "grid-tile grid-tile--hidden"
       },
       {
-        onclick: this.handleTileClick
+        onclick: this.handleTileClick.bind(this)
       }
     )
     this.elements.inner = createElement("div", { class: "grid-tile__inner" })
@@ -42,7 +40,7 @@ export default class Tile extends Base {
   }
 
   handleTileClick(e) {
-    const tile = store.state.tiles[this.props.index]
+    const tile = store.getState().tiles[this.props.index]
 
     let newState
     switch (tile.state) {
@@ -56,16 +54,16 @@ export default class Tile extends Base {
         newState = RESOLVED
     }
 
-    const newTiles = [...store.state.tiles]
+    const newTiles = [...store.getState().tiles]
     newTiles[this.props.index] = Object.assign({}, tile, { state: newState })
 
-    store.setState({
+    store.setState(() => ({
       tiles: newTiles
-    })
+    }))
   }
 
   update() {
-    const { url, state } = store.state.tiles[this.props.index]
+    const { url, state } = store.getState().tiles[this.props.index]
 
     this.elements.button.classList.toggle("grid-tile--hidden", state === HIDDEN)
     this.elements.button.classList.toggle(
