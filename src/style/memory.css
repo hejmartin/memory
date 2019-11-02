@@ -8,4 +8,9 @@
 
 .grid__tile {
   display: block;
+  opacity: 0.25;
+}
+
+.grid__tile--revealed {
+  opacity: 1;
 }

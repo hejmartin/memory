@@ -19,12 +19,10 @@ export default class Tile extends Base {
     })
 
     this.root = createElement("div")
-    const button = createElement(
+    this.button = createElement(
       "button",
       {
-        class: `grid__tile ${
-          tile.state === REVEALED ? "grid__tile--revealed" : ""
-        }`
+        class: `grid__tile`
       },
       {
         onclick: this.handleTileClick
@@ -33,8 +31,8 @@ export default class Tile extends Base {
 
     const image = createElement("img", { src: tile.url })
 
-    button.append(image)
-    this.root.append(button)
+    this.button.append(image)
+    this.root.append(this.button)
   }
 
   handleTileClick(e) {
@@ -62,6 +60,7 @@ export default class Tile extends Base {
 
   update() {
     const { url, state } = store.state.tiles[this.props.index]
-    console.log(state)
+
+    this.button.classList.toggle("grid__tile--revealed", state === REVEALED)
   }
 }
