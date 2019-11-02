@@ -7,18 +7,17 @@ import {
 import Base from "./Base.js"
 import * as store from "../lib/store.js"
 import Tile, { HIDDEN, REVEALED, RESOLVED } from "./Tile.js"
+import StatusBar from "./StatusBar.js"
 
 export default class App extends Base {
   constructor(props) {
     super(props)
 
+    const statusBar = new StatusBar()
+
     this.elements.root = createElement("div")
     this.elements.grid = createElement("grid", { class: "grid" })
-    this.elements.status = createElement("div", {
-      class: "status",
-      "aria-live": "polite"
-    })
-    this.elements.root.append(this.elements.grid, this.elements.status)
+    this.elements.root.append(this.elements.grid, statusBar.elements.root)
 
     store.setState(() => ({
       loading: true
@@ -47,7 +46,6 @@ export default class App extends Base {
       })
 
     store.addListener("tiles", this.handleTilesUpdate.bind(this))
-    store.addListener("attempts", this.update.bind(this))
   }
 
   createTiles() {
@@ -82,7 +80,7 @@ export default class App extends Base {
         // If they don't match, flip them back down
         revealed.forEach((tile, index) => {
           setTimeout(() => {
-            store.setState(({ tiles, attempts }) => ({
+            store.setState(({ tiles }) => ({
               tiles: tiles.map(t => {
                 if (t !== tile) return t
                 return Object.assign({}, t, { state: HIDDEN })
@@ -96,12 +94,5 @@ export default class App extends Base {
     this.update()
   }
 
-  update() {
-    const { tiles, attempts } = store.getState()
-    const totalPairs = tiles.length / 2
-    const resolvedPairs =
-      tiles.filter(tile => tile.state === RESOLVED).length / 2
-
-    this.elements.status.innerHTML = `Resolved: ${resolvedPairs} / ${totalPairs} | Attempts: ${attempts}`
-  }
+  update() {}
 }
