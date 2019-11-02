@@ -1,0 +1,11 @@
+.grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 20%));
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.grid__tile {
+  display: block;
+}
