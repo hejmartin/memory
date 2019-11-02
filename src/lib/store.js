@@ -1,7 +1,8 @@
 import { getByPath } from "./utils.js"
 
 let state = {
-  tiles: []
+  tiles: [],
+  attempts: 0
 }
 const listeners = {}
 

@@ -40,11 +40,11 @@ export default class App extends Base {
         )
       })
       .catch(err => {
-        // FIXME: image #97 seems to bw broken, so this needs to be handled
-        console.error("Something broke!", err)
+        // TODO: handle errors
       })
 
     store.addListener("tiles", this.handleTilesUpdate.bind(this))
+    store.addListener("attempts", this.update.bind(this))
   }
 
   createTiles() {
@@ -61,6 +61,10 @@ export default class App extends Base {
     if (revealed.length > 1) {
       const isMatch = revealed.every(({ url }) => url === revealed[0].url)
 
+      store.setState(({ attempts }) => ({
+        attempts: attempts + 1
+      }))
+
       if (isMatch) {
         // If revealed tiles match, mark them as resolved
         store.setState(() => ({
@@ -75,7 +79,7 @@ export default class App extends Base {
         // If they don't match, flip them back down
         revealed.forEach((tile, index) => {
           setTimeout(() => {
-            store.setState(({ tiles }) => ({
+            store.setState(({ tiles, attempts }) => ({
               tiles: tiles.map(t => {
                 if (t !== tile) return t
                 return Object.assign({}, t, { state: HIDDEN })
@@ -90,10 +94,11 @@ export default class App extends Base {
   }
 
   update() {
-    const totalPairs = store.getState().tiles.length / 2
+    const { tiles, attempts } = store.getState()
+    const totalPairs = tiles.length / 2
     const resolvedPairs =
-      store.getState().tiles.filter(tile => tile.state === RESOLVED).length / 2
+      tiles.filter(tile => tile.state === RESOLVED).length / 2
 
-    this.elements.counter.innerHTML = `Resolved: ${resolvedPairs} / ${totalPairs}`
+    this.elements.counter.innerHTML = `Resolved: ${resolvedPairs} / ${totalPairs} | Attempts: ${attempts}`
   }
 }

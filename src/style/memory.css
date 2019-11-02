@@ -20,6 +20,10 @@
   transform: rotateY(180deg);
 }
 
+.grid-tile--resolved {
+  box-shadow: 0 0 10px green;
+}
+
 .grid-tile__front {
   position: absolute;
   top: 0;
