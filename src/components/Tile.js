@@ -18,21 +18,27 @@ export default class Tile extends Base {
       this.update()
     })
 
-    this.root = createElement("div")
-    this.button = createElement(
+    this.elements.root = createElement("div")
+    this.elements.button = createElement(
       "button",
       {
-        class: `grid__tile`
+        class: "grid-tile grid-tile--hidden"
       },
       {
         onclick: this.handleTileClick
       }
     )
-
-    const image = createElement("img", { src: tile.url })
-
-    this.button.append(image)
-    this.root.append(this.button)
+    this.elements.inner = createElement("div", { class: "grid-tile__inner" })
+    this.elements.front = createElement("img", {
+      src: tile.url,
+      class: "grid-tile__front"
+    })
+    this.elements.back = createElement("div", {
+      class: " grid-tile__back"
+    })
+    this.elements.inner.append(this.elements.front, this.elements.back)
+    this.elements.button.append(this.elements.inner)
+    this.elements.root.append(this.elements.button)
   }
 
   handleTileClick(e) {
@@ -50,17 +56,21 @@ export default class Tile extends Base {
         newState = RESOLVED
     }
 
-    const tiles = [...store.state.tiles]
-    tiles[this.props.index] = Object.assign({}, tile, { state: newState })
+    const newTiles = [...store.state.tiles]
+    newTiles[this.props.index] = Object.assign({}, tile, { state: newState })
 
     store.setState({
-      tiles
+      tiles: newTiles
     })
   }
 
   update() {
     const { url, state } = store.state.tiles[this.props.index]
 
-    this.button.classList.toggle("grid__tile--revealed", state === REVEALED)
+    this.elements.button.classList.toggle("grid-tile--hidden", state === HIDDEN)
+    this.elements.button.classList.toggle(
+      "grid-tile--resolved",
+      state === RESOLVED
+    )
   }
 }

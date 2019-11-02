@@ -34,8 +34,6 @@ class Store {
   }
 }
 
-const store = new Store({
+export default new Store({
   tiles: []
 })
-
-export default store

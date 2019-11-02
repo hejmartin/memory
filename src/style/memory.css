@@ -6,11 +6,36 @@
   padding: 10px;
 }
 
-.grid__tile {
+.grid-tile {
   display: block;
-  opacity: 0.25;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  perspective: 600px;
+  transition: all 0.3s;
+  transform-style: preserve-3d;
 }
 
-.grid__tile--revealed {
-  opacity: 1;
+.grid-tile--hidden {
+  transform: rotateY(180deg);
+}
+
+.grid-tile__front {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  backface-visibility: hidden;
+}
+
+.grid-tile__back {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #000;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
 }
