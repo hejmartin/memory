@@ -18,6 +18,7 @@
 
 /* 1. Prevent adjustments of font size after orientation changes in iOS. */
 html {
+  font-family: "Concert One", sans-serif;
   -webkit-text-size-adjust: 100%; /* 1 */
 }
 
