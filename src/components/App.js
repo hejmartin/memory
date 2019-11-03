@@ -16,7 +16,7 @@ export default class App extends Base {
     const statusBar = new StatusBar()
 
     this.elements.root = createElement("div", { class: "app" })
-    this.elements.grid = createElement("ul", { class: "grid" })
+    this.elements.grid = createElement("ul", { class: "grid", role: "main" })
     this.elements.root.append(statusBar.elements.root, this.elements.grid)
 
     store.setState(() => ({
