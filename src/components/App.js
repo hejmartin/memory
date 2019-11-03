@@ -23,7 +23,7 @@ export default class App extends Base {
       loading: true
     }))
 
-    Promise.all(getRandomImages(10).map(preloadImage))
+    Promise.all(getRandomImages(6).map(preloadImage))
       .then(urls => {
         const tiles = urls.reduce((tiles, url, index) => {
           tiles.push({ url, state: HIDDEN, imageNumber: index })

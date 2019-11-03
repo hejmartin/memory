@@ -41,7 +41,7 @@
   justify-content: center;
   align-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 10px 10px 150px;
 }
 
 @media screen and (min-width: 500px) {
@@ -51,16 +51,18 @@
   }
 }
 
-.grid-tile {
+.tile {
+  --rotate: 0deg;
   display: block;
   position: relative;
   width: 100px;
   height: 100px;
   filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.3));
+  transform: rotate(var(--rotate));
 }
 
 /* Never remove focus outline for keyboard users */
-html:not(.keyboarduser) .grid-tile:focus {
+html:not(.keyboarduser) .tile:focus {
   outline: 0;
 }
 
@@ -88,7 +90,7 @@ html:not(.keyboarduser) .grid-tile:focus {
   }
 }
 
-.grid-tile__inner {
+.tile__inner {
   position: absolute;
   top: 0;
   right: 0;
@@ -99,15 +101,15 @@ html:not(.keyboarduser) .grid-tile:focus {
   transform: rotateY(180deg);
 }
 
-.grid-tile--revealed .grid-tile__inner {
+.tile--revealed .tile__inner {
   animation: reveal 0.5s forwards;
 }
 
-.grid-tile--hidden .grid-tile__inner {
+.tile--hidden .tile__inner {
   animation: hide 0.5s forwards;
 }
 
-.grid-tile__front {
+.tile__front {
   position: absolute;
   top: 0;
   right: 0;
@@ -121,7 +123,7 @@ html:not(.keyboarduser) .grid-tile:focus {
 }
 
 /* 1. translateZ needed in Safari when rotating */
-.grid-tile__back {
+.tile__back {
   position: absolute;
   top: 0;
   right: 0;

@@ -21,14 +21,14 @@ export function createElement(type, attributes = {}, props = {}) {
   return el
 }
 
-export function getRandomImages(_num = 10) {
+export function getRandomImages(num = 10) {
   // FIXME: It turns out that picsum has a bunch of broken images,
   // so for now this will be a fixes list of images that I know work.
   const ids = [45, 73, 89, 17, 64, 65, 95, 70, 92, 9]
-  return ids.map(id => `https://picsum.photos/id/${id}/200/200`)
+  return ids.slice(0, num).map(id => `https://picsum.photos/id/${id}/200/200`)
 
   // return new Array(num).fill("")
-  //   const randomId = Math.floor(Math.random() * (100 - 1)) + 1
+  //   const randomId = getRandomNumber(1, 100)
   //   return `https://picsum.photos/id/${randomId}/200/200`
   // })
 }
@@ -56,4 +56,8 @@ export function shuffleArray(a) {
     ;[a[i], a[j]] = [a[j], a[i]]
   }
   return a
+}
+
+export function getRandomNumber(min, max) {
+  return Math.random() * (max - min) + min
 }

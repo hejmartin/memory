@@ -1,6 +1,6 @@
 import Base from "./Base.js"
 import * as store from "../lib/store.js"
-import { createElement } from "../lib/utils.js"
+import { createElement, getRandomNumber } from "../lib/utils.js"
 
 export const HIDDEN = "HIDDEN"
 export const REVEALED = "REVEALED"
@@ -20,23 +20,26 @@ export default class Tile extends Base {
     this.elements.button = createElement(
       "button",
       {
-        class: "grid-tile"
+        class: "tile",
+        style: `--rotate: ${getRandomNumber(-5, 5)}deg`
       },
       {
         onclick: this.handleTileClick.bind(this)
       }
     )
 
-    this.elements.inner = createElement("div", { class: "grid-tile__inner" })
+    this.elements.inner = createElement("div", {
+      class: "tile__inner"
+    })
 
     this.elements.front = createElement("img", {
       src: tile.url,
-      class: "grid-tile__front",
+      class: "tile__front",
       alt: ""
     })
 
     this.elements.back = createElement("div", {
-      class: "grid-tile__back"
+      class: "tile__back"
     })
 
     this.elements.inner.append(this.elements.front, this.elements.back)
@@ -95,9 +98,9 @@ export default class Tile extends Base {
     const { state } = this.tile
     const classList = this.elements.button.classList
 
-    classList.toggle("grid-tile--revealed", state !== HIDDEN)
-    classList.toggle("grid-tile--hidden", state === HIDDEN)
-    classList.toggle("grid-tile--resolved", state === RESOLVED)
+    classList.toggle("tile--revealed", state !== HIDDEN)
+    classList.toggle("tile--hidden", state === HIDDEN)
+    classList.toggle("tile--resolved", state === RESOLVED)
 
     this.updateTileDescription()
   }
