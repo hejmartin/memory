@@ -10,13 +10,13 @@ export default class Tile extends Base {
   constructor(props) {
     super(props)
 
-    const tile = store.getState().tiles[props.index]
+    const tile = this.tile
 
     store.addListener(`tiles.${props.index}`, tile => {
       this.update()
     })
 
-    this.elements.root = createElement("div")
+    this.elements.root = createElement("li")
     this.elements.button = createElement(
       "button",
       {
@@ -32,7 +32,7 @@ export default class Tile extends Base {
     this.elements.front = createElement("img", {
       src: tile.url,
       class: "grid-tile__front",
-      alt: `Button #${props.index + 1}`
+      alt: ""
     })
 
     this.elements.back = createElement("div", {
@@ -42,10 +42,16 @@ export default class Tile extends Base {
     this.elements.inner.append(this.elements.front, this.elements.back)
     this.elements.button.append(this.elements.inner)
     this.elements.root.append(this.elements.button)
+
+    this.updateTileDescription()
+  }
+
+  get tile() {
+    return store.getState().tiles[this.props.index]
   }
 
   handleTileClick() {
-    const tile = store.getState().tiles[this.props.index]
+    const tile = this.tile
 
     let newState
     switch (tile.state) {
@@ -67,12 +73,32 @@ export default class Tile extends Base {
     }))
   }
 
+  updateTileDescription() {
+    const { state, imageNumber } = this.tile
+    let text = `Tile #${this.props.index + 1}. `
+
+    switch (state) {
+      case HIDDEN:
+        text += "Hidden"
+        break
+      case REVEALED:
+        text += `Revealed, showing image number ${imageNumber}`
+        break
+      case RESOLVED:
+        text += `Resolved, showing image number ${imageNumber}`
+    }
+
+    this.elements.front.setAttribute("alt", text)
+  }
+
   update() {
-    const { state } = store.getState().tiles[this.props.index]
+    const { state } = this.tile
     const classList = this.elements.button.classList
 
     classList.toggle("grid-tile--revealed", state !== HIDDEN)
     classList.toggle("grid-tile--hidden", state === HIDDEN)
     classList.toggle("grid-tile--resolved", state === RESOLVED)
+
+    this.updateTileDescription()
   }
 }

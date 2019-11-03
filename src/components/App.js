@@ -16,7 +16,7 @@ export default class App extends Base {
     const statusBar = new StatusBar()
 
     this.elements.root = createElement("div", { class: "app" })
-    this.elements.grid = createElement("grid", { class: "grid" })
+    this.elements.grid = createElement("ul", { class: "grid" })
     this.elements.root.append(statusBar.elements.root, this.elements.grid)
 
     store.setState(() => ({
@@ -25,9 +25,9 @@ export default class App extends Base {
 
     Promise.all(getRandomImages(10).map(preloadImage))
       .then(urls => {
-        const tiles = urls.reduce((tiles, url) => {
-          tiles.push({ url, state: HIDDEN })
-          tiles.push({ url, state: HIDDEN })
+        const tiles = urls.reduce((tiles, url, index) => {
+          tiles.push({ url, state: HIDDEN, imageNumber: index })
+          tiles.push({ url, state: HIDDEN, imageNumber: index })
           return tiles
         }, [])
 
@@ -43,6 +43,7 @@ export default class App extends Base {
       })
       .catch(err => {
         // TODO: handle errors
+        console.error(err)
       })
 
     store.addListener("tiles", this.handleTilesUpdate.bind(this))
@@ -86,7 +87,7 @@ export default class App extends Base {
                 return Object.assign({}, t, { state: HIDDEN })
               })
             }))
-          }, 500 * (index + 1))
+          }, 700 * (index + 1))
         })
       }
     }
