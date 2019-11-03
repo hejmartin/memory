@@ -36,7 +36,7 @@ export default class Tile extends Base {
     })
 
     this.elements.back = createElement("div", {
-      class: " grid-tile__back"
+      class: "grid-tile__back"
     })
 
     this.elements.inner.append(this.elements.front, this.elements.back)

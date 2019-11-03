@@ -56,7 +56,7 @@ export default class App extends Base {
   }
 
   handleTilesUpdate() {
-    const tiles = store.getState().tiles
+    const { tiles } = store.getState()
     const revealed = tiles.filter(tile => tile.state === REVEALED)
 
     if (revealed.length > 1) {
