@@ -1,13 +1,42 @@
+@import url("https://fonts.googleapis.com/css?family=Concert+One&display=block");
+
 .app {
   display: flex;
   flex-direction: column;
   width: 100vw;
   height: 100vh;
+  font-family: "Concert One", sans-serif;
+}
+
+.status-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* 1. Indenting needed to properly center the text */
+.status-bar__heading {
+  font-size: 24px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1em;
+  text-indent: 1em; /* [1] */
+}
+
+.status-bar__status {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  color: #a8269b;
 }
 
 .grid {
   flex-grow: 1;
-  width: 100%;
+  width: 100vw;
   display: grid;
   grid-template-columns: repeat(3, -webkit-min-content);
   grid-template-columns: repeat(3, min-content);

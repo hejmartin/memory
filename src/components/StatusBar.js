@@ -8,26 +8,37 @@ export default class StatusBar extends Base {
     super(props)
 
     this.elements.root = createElement("div", {
-      class: "status-bar",
-      "aria-live": "polite"
+      class: "status-bar"
     })
     this.elements.heading = createElement(
       "h1",
       { class: "status-bar__heading" },
       { innerText: "Memory!" }
     )
-    this.elements.text = createElement("div")
+    this.elements.status = createElement("div", {
+      class: "status-bar__status",
+      "aria-live": "polite"
+    })
+    this.elements.resolved = createElement("div", {
+      class: "status-bar__resolved"
+    })
+    this.elements.attempts = createElement("div", {
+      class: "status-bar__attempts"
+    })
     this.elements.resetButton = createElement(
       "button",
-      {},
+      {
+        innerText: "Play again?"
+      },
       {
         onclick: () => {
           this.resetGame()
         }
       }
     )
-    this.elements.resetButton.innerText = "Play again?"
-    this.elements.root.append(this.elements.heading, this.elements.text)
+
+    this.elements.status.append(this.elements.resolved, this.elements.attempts)
+    this.elements.root.append(this.elements.heading, this.elements.status)
 
     store.addListener("attempts", this.update.bind(this))
     store.addListener("tiles", this.update.bind(this))
@@ -51,14 +62,12 @@ export default class StatusBar extends Base {
     const allResolved =
       tiles.length > 0 && tiles.every(({ state }) => state === RESOLVED)
 
-    let text = `Resolved: ${resolvedPairs} / ${totalPairs}`
-    text += ` | Attempts: ${attempts}`
+    this.elements.resolved.innerText = `Resolved pairs: ${resolvedPairs} / ${totalPairs}`
+    this.elements.attempts.innerText = `Attempts: ${attempts}`
 
     if (allResolved) {
       this.elements.root.append(this.elements.resetButton)
       text += `You did it! In just ${attempts} attemps!`
     }
-
-    this.elements.text.innerHTML = text
   }
 }
