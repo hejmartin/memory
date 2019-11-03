@@ -91,9 +91,5 @@ export default class App extends Base {
         })
       }
     }
-
-    this.update()
   }
-
-  update() {}
 }
