@@ -1,7 +1,7 @@
 import Base from "./Base.js"
 import { createElement } from "../lib/utils.js"
 import * as store from "../lib/store.js"
-import { RESOLVED, HIDDEN } from "./Tile.js"
+import { RESOLVED } from "./Tile.js"
 
 export default class StatusBar extends Base {
   constructor(props) {
@@ -36,10 +36,7 @@ export default class StatusBar extends Base {
   }
 
   resetGame() {
-    store.setState(({ tiles }) => ({
-      attempts: 0,
-      tiles: tiles.map(tile => Object.assign({}, tile, { state: HIDDEN }))
-    }))
+    document.location.reload()
   }
 
   update() {
