@@ -11,6 +11,11 @@ export default class StatusBar extends Base {
       class: "status-bar",
       "aria-live": "polite"
     })
+    this.elements.heading = createElement(
+      "h1",
+      { class: "status-bar__heading" },
+      { innerText: "Memory!" }
+    )
     this.elements.text = createElement("div")
     this.elements.resetButton = createElement(
       "button",
@@ -22,7 +27,7 @@ export default class StatusBar extends Base {
       }
     )
     this.elements.resetButton.innerText = "Play again?"
-    this.elements.root.append(this.elements.text)
+    this.elements.root.append(this.elements.heading, this.elements.text)
 
     store.addListener("attempts", this.update.bind(this))
     store.addListener("tiles", this.update.bind(this))

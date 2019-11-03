@@ -1,9 +1,28 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
 .grid {
+  flex-grow: 1;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 20%));
-  grid-gap: 10px;
+  grid-template-columns: repeat(3, -webkit-min-content);
+  grid-template-columns: repeat(3, min-content);
+  grid-gap: 20px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
   padding: 10px;
+}
+
+@media screen and (min-width: 500px) {
+  .grid {
+    grid-template-columns: repeat(4, -webkit-min-content);
+    grid-template-columns: repeat(4, min-content);
+  }
 }
 
 .grid-tile {
@@ -11,17 +30,58 @@
   position: relative;
   width: 100px;
   height: 100px;
-  perspective: 600px;
-  transition: all 0.3s;
-  transform-style: preserve-3d;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.3));
 }
 
-.grid-tile--hidden {
+.grid-tile:focus {
+  outline: 0;
+}
+
+@keyframes reveal {
+  0% {
+    transform: rotateY(180deg) scale(1);
+  }
+  50% {
+    transform: rotateY(50deg) scale(1.1);
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
+@keyframes hide {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: rotateY(130deg) scale(1.1);
+  }
+  100% {
+    transform: rotateY(180deg) scale(1);
+  }
+}
+
+.grid-tile__inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  perspective: 600px;
+  transform-style: preserve-3d;
   transform: rotateY(180deg);
 }
 
+.grid-tile--revealed .grid-tile__inner {
+  animation: reveal 0.5s forwards;
+}
+
+.grid-tile--hidden .grid-tile__inner {
+  animation: hide 0.5s forwards;
+}
+
 .grid-tile--resolved {
-  box-shadow: 0 0 10px green;
+  /* box-shadow: 0 0 10px green; */
 }
 
 .grid-tile__front {
@@ -30,16 +90,31 @@
   right: 0;
   bottom: 0;
   left: 0;
+  border-radius: 4px;
+  border: 5px solid #fff;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
+/* 1. translateZ needed in Safari when rotating */
 .grid-tile__back {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background: #000;
-  transform: rotateY(180deg);
+  border-radius: 4px;
+  overflow: hidden;
+  background: repeating-linear-gradient(
+    45deg,
+    #a8269b,
+    #a8269b 5px,
+    #d75acd 5px,
+    #d75acd 10px
+  );
+  border: 5px solid #fff;
+  transform: rotateY(180deg) translateZ(1px); /* [1] */
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }

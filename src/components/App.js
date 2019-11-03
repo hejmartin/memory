@@ -15,9 +15,9 @@ export default class App extends Base {
 
     const statusBar = new StatusBar()
 
-    this.elements.root = createElement("div")
+    this.elements.root = createElement("div", { class: "app" })
     this.elements.grid = createElement("grid", { class: "grid" })
-    this.elements.root.append(this.elements.grid, statusBar.elements.root)
+    this.elements.root.append(statusBar.elements.root, this.elements.grid)
 
     store.setState(() => ({
       loading: true

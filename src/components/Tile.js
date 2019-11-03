@@ -20,7 +20,7 @@ export default class Tile extends Base {
     this.elements.button = createElement(
       "button",
       {
-        class: "grid-tile grid-tile--hidden"
+        class: "grid-tile"
       },
       {
         onclick: this.handleTileClick.bind(this)
@@ -68,12 +68,11 @@ export default class Tile extends Base {
   }
 
   update() {
-    const { url, state } = store.getState().tiles[this.props.index]
+    const { state } = store.getState().tiles[this.props.index]
+    const classList = this.elements.button.classList
 
-    this.elements.button.classList.toggle("grid-tile--hidden", state === HIDDEN)
-    this.elements.button.classList.toggle(
-      "grid-tile--resolved",
-      state === RESOLVED
-    )
+    classList.toggle("grid-tile--revealed", state !== HIDDEN)
+    classList.toggle("grid-tile--hidden", state === HIDDEN)
+    classList.toggle("grid-tile--resolved", state === RESOLVED)
   }
 }
