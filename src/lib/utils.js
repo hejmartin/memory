@@ -21,14 +21,16 @@ export function createElement(type, attributes = {}, props = {}) {
   return el
 }
 
-export function getRandomImages(num = 10) {
-  // FIXME: unique ids only, and somethimes images break (e.g. #97)
-  const ids = [45, 73 /* , 89, 17, 64, 65, 95, 70, 92, 9 */]
+export function getRandomImages(_num = 10) {
+  // FIXME: It turns out that picsum has a bunch of broken images,
+  // so for now this will be a fixes list of images that I know work.
+  const ids = [45, 73, 89, 17, 64, 65, 95, 70, 92, 9]
+  return ids.map(id => `https://picsum.photos/id/${id}/200/200`)
+
   // return new Array(num).fill("")
-  return ids.map(id => {
-    // const randomId = Math.floor(Math.random() * (100 - 1)) + 1
-    return `https://picsum.photos/id/${id}/200/200`
-  })
+  //   const randomId = Math.floor(Math.random() * (100 - 1)) + 1
+  //   return `https://picsum.photos/id/${randomId}/200/200`
+  // })
 }
 
 export function preloadImage(url) {
