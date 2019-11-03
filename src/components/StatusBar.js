@@ -25,17 +25,6 @@ export default class StatusBar extends Base {
     this.elements.attempts = createElement("div", {
       class: "status-bar__attempts"
     })
-    this.elements.resetButton = createElement(
-      "button",
-      {
-        innerText: "Play again?"
-      },
-      {
-        onclick: () => {
-          this.resetGame()
-        }
-      }
-    )
 
     this.elements.status.append(this.elements.resolved, this.elements.attempts)
     this.elements.root.append(this.elements.heading, this.elements.status)
@@ -66,8 +55,13 @@ export default class StatusBar extends Base {
     this.elements.attempts.innerText = `Attempts: ${attempts}`
 
     if (allResolved) {
-      this.elements.root.append(this.elements.resetButton)
-      text += `You did it! In just ${attempts} attemps!`
+      setTimeout(() => {
+        if (
+          confirm(`You did it! In just ${attempts} attemps!\n\nPlay again?`)
+        ) {
+          this.resetGame()
+        }
+      }, 1000)
     }
   }
 }

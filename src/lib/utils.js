@@ -23,7 +23,7 @@ export function createElement(type, attributes = {}, props = {}) {
 
 export function getRandomImages(num = 10) {
   // FIXME: unique ids only, and somethimes images break (e.g. #97)
-  const ids = [45, 73, 89, 17, 64, 65, 95, 70, 92, 9]
+  const ids = [45, 73 /* , 89, 17, 64, 65, 95, 70, 92, 9 */]
   // return new Array(num).fill("")
   return ids.map(id => {
     // const randomId = Math.floor(Math.random() * (100 - 1)) + 1
