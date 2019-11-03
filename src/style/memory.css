@@ -62,7 +62,8 @@
   filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.3));
 }
 
-.grid-tile:focus {
+/* Never remove focus outline for keyboard users */
+html:not(.keyboarduser) .grid-tile:focus {
   outline: 0;
 }
 
@@ -109,10 +110,6 @@
   animation: hide 0.5s forwards;
 }
 
-.grid-tile--resolved {
-  /* box-shadow: 0 0 10px green; */
-}
-
 .grid-tile__front {
   position: absolute;
   top: 0;
@@ -138,9 +135,9 @@
   background: repeating-linear-gradient(
     45deg,
     #a8269b,
-    #a8269b 5px,
-    #d75acd 5px,
-    #d75acd 10px
+    #a8269b 3px,
+    #d75acd 3px,
+    #d75acd 6px
   );
   border: 5px solid #fff;
   transform: rotateY(180deg) translateZ(1px); /* [1] */
